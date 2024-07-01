@@ -1,0 +1,10 @@
+﻿@page "/login1"
+@model BlazorApp1.Pages.Login1Model
+
+<h3>Login1</h3>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <button type="submit">click here to login</button>
+    </div>
+</form>
