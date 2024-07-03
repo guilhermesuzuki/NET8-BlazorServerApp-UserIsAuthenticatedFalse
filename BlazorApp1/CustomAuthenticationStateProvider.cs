@@ -22,6 +22,14 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
     public override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine($"Is the user authenticated? {_httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine($"Connection {_httpContextAccessor.HttpContext?.Connection.Id}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine($"Is websocket request? {_httpContextAccessor.HttpContext?.WebSockets.IsWebSocketRequest}");
+        Console.WriteLine();
+
         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
 
         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "email@dummy.com"));

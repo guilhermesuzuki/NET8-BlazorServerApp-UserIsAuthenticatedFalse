@@ -44,11 +44,19 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("CustomPolicy1", policy => policy.RequireAuthenticatedUser().AddAuthenticationSchemes("Cookies"));
     options.AddPolicy("CustomPolicy2", policy => policy.RequireAuthenticatedUser().AddAuthenticationSchemes("Two"));
+
+    var defaultPolicy = new AuthorizationPolicyBuilder("Cookies");
+    defaultPolicy.RequireAuthenticatedUser();
+
+    options.DefaultPolicy = defaultPolicy.Build();
 });
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+builder.Services.AddSession();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
