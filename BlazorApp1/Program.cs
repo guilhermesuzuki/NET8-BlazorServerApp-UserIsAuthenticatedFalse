@@ -1,6 +1,7 @@
 using BlazorApp1.Components;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,15 +18,10 @@ builder.Services.AddAuthentication()
     options.ExpireTimeSpan = new TimeSpan(0, 0, 3, 0);
     options.Events = new()
     {
-        OnSigningIn = context =>
+        OnSignedIn = context =>
         {
             return Task.CompletedTask;
-        }
-    };
-
-    options.ForwardDefaultSelector = context =>
-    {
-        return "Cookies";
+        },
     };
 })
 .AddCookie("Two", "Two", options =>
@@ -36,7 +32,7 @@ builder.Services.AddAuthentication()
     options.ExpireTimeSpan = new TimeSpan(0, 0, 3, 0);
     options.Events = new()
     {
-        OnSigningIn = context =>
+        OnSignedIn = context =>
         {
             return Task.CompletedTask;
         }
@@ -47,19 +43,11 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("CustomPolicy1", policy => policy.RequireAuthenticatedUser().AddAuthenticationSchemes("Cookies"));
     options.AddPolicy("CustomPolicy2", policy => policy.RequireAuthenticatedUser().AddAuthenticationSchemes("Two"));
-
-    var policy = new AuthorizationPolicy(
-        new List<IAuthorizationRequirement>() { new AssertionRequirement(context => 
-        { 
-            return true; 
-        })},
-        new List<string> { }
-        );
-
-    options.DefaultPolicy = policy;
 });
 
 builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 var app = builder.Build();
 
