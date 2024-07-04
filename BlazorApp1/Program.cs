@@ -45,9 +45,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CustomPolicy1", policy => policy.RequireAuthenticatedUser().AddAuthenticationSchemes("Cookies"));
     options.AddPolicy("CustomPolicy2", policy => policy.RequireAuthenticatedUser().AddAuthenticationSchemes("Two"));
 
-    var defaultPolicy = new AuthorizationPolicyBuilder("Cookies");
-    defaultPolicy.RequireAuthenticatedUser();
-
+    var defaultPolicy = new AuthorizationPolicyBuilder("Cookies").RequireAuthenticatedUser();
     options.DefaultPolicy = defaultPolicy.Build();
 });
 
