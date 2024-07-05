@@ -51,6 +51,13 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
+
+
+/*
+ * COMMENT THIS LINE TO SEE THE FLICKERING
+ * COMMENT THIS LINE TO SEE THE FLICKERING
+ * COMMENT THIS LINE TO SEE THE FLICKERING
+ */
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 builder.Services.AddSession();
